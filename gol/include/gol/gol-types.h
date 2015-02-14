@@ -14,11 +14,17 @@ typedef struct {
     int j;
 } gol_int_coord;
 
+/// Returns a gol_int_coord initialized with particular values.
+GOL_INLINE gol_int_coord gol_create_int_coord(const int i, const int j);
+
 /// A 2D size with integer values.
 typedef struct {
     int width;
     int height;
 } gol_int_size;
+
+/// Returns a gol_int_size initialized with particular values.
+GOL_INLINE gol_int_size gol_create_int_size(const int width, const int height);
 
 /// A 2D rectangle with integer values.
 typedef struct {
@@ -26,10 +32,40 @@ typedef struct {
     gol_int_size size;
 } gol_int_rect;
 
-/// Returns true if a rectangle is empty.
-bool gol_int_rect_is_empty(gol_int_rect rect);
-
 /// The empty gol_int_rect;
 GOL_EXTERN const gol_int_rect GOL_INT_RECT_EMPTY;
+
+/// Create a gol_int_rect with particular values.
+GOL_INLINE gol_int_rect gol_create_int_rect(const gol_int_coord origin, const gol_int_size size);
+
+/// Create a gol_int_rect with particular values.
+GOL_INLINE gol_int_rect gol_create_int_rect2(const int i, const int j, const int width, const int height);
+
+/// Returns true if a rectangle is empty.
+GOL_EXTERN bool gol_int_rect_is_empty(gol_int_rect rect);
+
+
+//
+// Definitions of inline functions.
+//
+
+GOL_INLINE gol_int_coord gol_create_int_coord(int i, int j) {
+    gol_int_coord coord = { i, j };
+    return coord;
+}
+
+GOL_INLINE gol_int_size gol_create_int_size(const int width, const int height) {
+    gol_int_size size = { width, height };
+    return size;
+}
+
+GOL_INLINE gol_int_rect gol_create_int_rect(const gol_int_coord origin, const gol_int_size size) {
+    gol_int_rect rect = { origin, size };
+    return rect;
+}
+
+GOL_INLINE gol_int_rect gol_create_int_rect2(const int i, const int j, const int width, const int height) {
+    return gol_create_int_rect(gol_create_int_coord(i, j), gol_create_int_size(width, height));
+}
 
 #endif

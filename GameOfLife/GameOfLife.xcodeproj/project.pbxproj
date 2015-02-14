@@ -59,13 +59,13 @@
 		0B56ED891A8F61470066F22C /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				0B56ED8A1A8F61830066F22C /* gol-types.h */,
-				0B56ED8B1A8F61830066F22C /* gol-universe.h */,
-				0B56ED8C1A8F61830066F22C /* gol-universe.c */,
-				0BC8BE901A8F6DE5003B1CED /* gol-cell.h */,
 				0BC8BE911A8F6ECE003B1CED /* gol-cell.c */,
+				0BC8BE901A8F6DE5003B1CED /* gol-cell.h */,
 				0BC8BE931A8F7147003B1CED /* gol-defines.h */,
 				0BC8BE941A8F7215003B1CED /* gol-types.c */,
+				0B56ED8A1A8F61830066F22C /* gol-types.h */,
+				0B56ED8C1A8F61830066F22C /* gol-universe.c */,
+				0B56ED8B1A8F61830066F22C /* gol-universe.h */,
 			);
 			name = Library;
 			sourceTree = "<group>";

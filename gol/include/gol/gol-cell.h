@@ -12,6 +12,6 @@ typedef enum {
 
 typedef struct gol_cell *gol_cell_p;
 
-gol_cell_state gol_cell_get_state(const gol_cell_p cell);
+GOL_EXTERN gol_cell_state gol_cell_get_state(const gol_cell_p cell);
 
 #endif
