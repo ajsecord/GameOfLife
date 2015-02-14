@@ -1,0 +1,2 @@
+// The real root of the project.
+GOL_ROOT = $(SRCROOT)/..
