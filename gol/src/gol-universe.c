@@ -16,3 +16,8 @@ void gol_destroy_universe(gol_universe_p universe) {
         free(universe);
     }
 }
+
+gol_int_rect gol_universe_get_bounds(gol_universe_p universe) {
+    return GOL_INT_RECT_EMPTY;
+}
+

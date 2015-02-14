@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0B56EDA91A8F65520066F22C /* gol-universe.c in Sources */ = {isa = PBXBuildFile; fileRef = 0B56ED8C1A8F61830066F22C /* gol-universe.c */; };
 		0BC8BE921A8F6ECE003B1CED /* gol-cell.c in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE911A8F6ECE003B1CED /* gol-cell.c */; };
+		0BC8BE951A8F7215003B1CED /* gol-types.c in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE941A8F7215003B1CED /* gol-types.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		0BC8BE8E1A8F6910003B1CED /* GameOfLife.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = GameOfLife.xcconfig; sourceTree = "<group>"; };
 		0BC8BE901A8F6DE5003B1CED /* gol-cell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "gol-cell.h"; path = "../gol/include/gol/gol-cell.h"; sourceTree = "<group>"; };
 		0BC8BE911A8F6ECE003B1CED /* gol-cell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "gol-cell.c"; path = "../gol/src/gol-cell.c"; sourceTree = "<group>"; };
+		0BC8BE931A8F7147003B1CED /* gol-defines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "gol-defines.h"; path = "../gol/include/gol/gol-defines.h"; sourceTree = "<group>"; };
+		0BC8BE941A8F7215003B1CED /* gol-types.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "gol-types.c"; path = "../gol/src/gol-types.c"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,8 @@
 				0B56ED8C1A8F61830066F22C /* gol-universe.c */,
 				0BC8BE901A8F6DE5003B1CED /* gol-cell.h */,
 				0BC8BE911A8F6ECE003B1CED /* gol-cell.c */,
+				0BC8BE931A8F7147003B1CED /* gol-defines.h */,
+				0BC8BE941A8F7215003B1CED /* gol-types.c */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0BC8BE921A8F6ECE003B1CED /* gol-cell.c in Sources */,
+				0BC8BE951A8F7215003B1CED /* gol-types.c in Sources */,
 				0B56EDA91A8F65520066F22C /* gol-universe.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

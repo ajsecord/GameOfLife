@@ -1,6 +1,10 @@
 #ifndef GOL_TYPES_H
 #define GOL_TYPES_H
 
+#include <stdbool.h>
+
+#include <gol/gol-defines.h>
+
 /// The floating-point type.
 typedef float gol_float;
 
@@ -21,5 +25,11 @@ typedef struct {
     gol_int_coord origin;
     gol_int_size size;
 } gol_int_rect;
+
+/// Returns true if a rectangle is empty.
+bool gol_int_rect_is_empty(gol_int_rect rect);
+
+/// The empty gol_int_rect;
+GOL_EXTERN const gol_int_rect GOL_INT_RECT_EMPTY;
 
 #endif
