@@ -13,6 +13,7 @@
 		0BC8BE9A1A8F8D28003B1CED /* gol-rand-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BE981A8F8D28003B1CED /* gol-rand-internal.c */; };
 		0BC8BEA51A901FDD003B1CED /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BEA41A901FDD003B1CED /* main.c */; };
 		0BC8BEAB1A90E64E003B1CED /* libgol.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B56ED911A8F64030066F22C /* libgol.a */; };
+		0BC8BEAE1A90EAE6003B1CED /* gol-cell-storage.c in Sources */ = {isa = PBXBuildFile; fileRef = 0BC8BEAC1A90EAE6003B1CED /* gol-cell-storage.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,8 @@
 		0BC8BE991A8F8D28003B1CED /* gol-rand-internal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gol-rand-internal.h"; path = "../gol/src/gol-rand-internal.h"; sourceTree = "<group>"; };
 		0BC8BEA21A901FDD003B1CED /* rungol */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = rungol; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BC8BEA41A901FDD003B1CED /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = main.c; path = gol/main.c; sourceTree = "<group>"; };
+		0BC8BEAC1A90EAE6003B1CED /* gol-cell-storage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "gol-cell-storage.c"; path = "../gol/src/gol-cell-storage.c"; sourceTree = "<group>"; };
+		0BC8BEAD1A90EAE6003B1CED /* gol-cell-storage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "gol-cell-storage.h"; path = "../gol/src/gol-cell-storage.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +100,8 @@
 			children = (
 				0BC8BE961A8F771F003B1CED /* gol */,
 				0BC8BE971A8F7751003B1CED /* gol-cell-internal.h */,
+				0BC8BEAC1A90EAE6003B1CED /* gol-cell-storage.c */,
+				0BC8BEAD1A90EAE6003B1CED /* gol-cell-storage.h */,
 				0BC8BE911A8F6ECE003B1CED /* gol-cell.c */,
 				0BC8BE981A8F8D28003B1CED /* gol-rand-internal.c */,
 				0BC8BE991A8F8D28003B1CED /* gol-rand-internal.h */,
@@ -229,6 +234,7 @@
 			files = (
 				0BC8BE921A8F6ECE003B1CED /* gol-cell.c in Sources */,
 				0BC8BE951A8F7215003B1CED /* gol-types.c in Sources */,
+				0BC8BEAE1A90EAE6003B1CED /* gol-cell-storage.c in Sources */,
 				0BC8BE9A1A8F8D28003B1CED /* gol-rand-internal.c in Sources */,
 				0B56EDA91A8F65520066F22C /* gol-universe.c in Sources */,
 			);

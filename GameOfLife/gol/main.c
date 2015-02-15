@@ -2,7 +2,7 @@
 
 #include <gol/gol-universe.h>
 
-static bool print_cell(const gol_universe_p universe, const gol_int_coord coord, const gol_cell_p cell, void *user_data) {
+static bool print_cell(const gol_universe_p universe, const gol_int_coord coord, const gol_cellp cell, void *user_data) {
     char c;
     switch (gol_cell_get_state(cell)) {
         case GOL_CELL_ALIVE:         c = '*'; break;

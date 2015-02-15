@@ -12,12 +12,12 @@ typedef enum {
     GOL_CELL_ALIVE              ///< The cell is alive.
 } gol_cell_state;
 
-typedef struct gol_cell *gol_cell_p;
+typedef struct gol_cell *gol_cellp;
 
 /// Return the cell's state.
-GOL_EXTERN gol_cell_state gol_cell_get_state(const gol_cell_p cell);
+GOL_EXTERN gol_cell_state gol_cell_get_state(const gol_cellp cell);
 
 /// Return the generation that the cell last transitioned from alive to dead or vice-versa.
-GOL_EXTERN size_t gol_cell_get_last_transition_generation(const gol_cell_p cell);
+GOL_EXTERN size_t gol_cell_get_last_transition_generation(const gol_cellp cell);
 
 #endif

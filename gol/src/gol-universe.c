@@ -3,6 +3,7 @@
 #include <gol/gol-types.h>
 
 #include "gol-cell-internal.h"
+#include "gol-cell-storage.h"
 #include "gol-rand-internal.h"
 
 #include <assert.h>
@@ -12,13 +13,13 @@ static const struct gol_cell UNINITIALIZED_CELL = { GOL_CELL_UNINITIALIZED };
 static const size_t TEMP_UNIVERSE_SIZE = 10;
 
 /// Pointer to a mutating function that visits each cell in a region.
-typedef bool (*gol_cell_visitor_mutating)(const gol_universe_p universe, const gol_int_coord coord, gol_cell_p cell, void *user_data);
+typedef bool (*gol_cell_visitor_mutating)(const gol_universe_p universe, const gol_int_coord coord, gol_cellp cell, void *user_data);
 
 /// The universe in which the Game of Life occurs.
 struct gol_universe {
     size_t generation;
     gol_int_rect bounds;
-    gol_cell_p cells;
+    gol_cell_storagep cells;
 };
 
 /// Mutating version of gol_universe_visit_cells().
@@ -26,19 +27,10 @@ static bool universe_visit_cells_mutating(const gol_universe_p universe, const g
 
 /// A function that flips @cell to alive with a particular probability.
 /// The @user_data pointer must point to a @c gol_float that is the probability.
-static bool randomly_mark_cell_as_alive(const gol_universe_p universe, const gol_int_coord coord, gol_cell_p cell, void *user_data);
+static bool randomly_mark_cell_as_alive(const gol_universe_p universe, const gol_int_coord coord, gol_cellp cell, void *user_data);
 
 /// A function that applies the Game of Life rules.
-static bool apply_game_of_life_rules(const gol_universe_p universe, const gol_int_coord coord, gol_cell_p cell, void *user_data);
-
-/// Convert a coordinate in @bounds to an array index.
-GOL_INLINE size_t coord_to_index(const gol_int_rect bounds, const gol_int_coord coord);
-
-/// Convert an array index to a coordinate in @bounds.
-GOL_INLINE gol_int_coord index_to_coord(const gol_int_rect bounds, const size_t index);
-
-/// Return a cell at @coord without checking if @coord is in the universe's bounds.
-GOL_INLINE gol_cell_p get_cell_unsafe(const gol_universe_p universe, const gol_int_coord);
+static bool apply_game_of_life_rules(const gol_universe_p universe, const gol_int_coord coord, gol_cellp cell, void *user_data);
 
 
 gol_universe_p gol_create_universe() {
@@ -46,9 +38,10 @@ gol_universe_p gol_create_universe() {
     universe->generation = 0;
     universe->bounds = gol_create_int_rect2(0, 0, TEMP_UNIVERSE_SIZE, TEMP_UNIVERSE_SIZE);
     const size_t num_cells = universe->bounds.size.width * universe->bounds.size.height;
-    universe->cells = malloc(num_cells * sizeof(struct gol_cell));
+    universe->cells = gol_create_cell_storage(universe->bounds);
+    gol_cellp storage = gol_cell_storage_get_internal_pointer(universe->cells);
     for (size_t i = 0; i < num_cells; ++i) {
-        universe->cells[i] = gol_cell_create(GOL_CELL_UNINITIALIZED);
+        storage[i] = gol_cell_create(GOL_CELL_UNINITIALIZED);
     }
     return universe;
 }
@@ -70,12 +63,14 @@ gol_int_rect gol_universe_get_bounds(gol_universe_p universe) {
     return universe->bounds;
 }
 
-const gol_cell_p gol_universe_get_cell(const gol_universe_p universe, const gol_int_coord coord) {
+const gol_cellp gol_universe_get_cell(const gol_universe_p universe, const gol_int_coord coord) {
     assert(universe);
     if (!gol_int_rect_contains_coord(universe->bounds, coord)) {
-        return (const gol_cell_p)&UNINITIALIZED_CELL;
+        return (const gol_cellp)&UNINITIALIZED_CELL;
     }
-    return get_cell_unsafe(universe, coord);
+    const gol_cellp storage = gol_cell_storage_get_internal_pointer(universe->cells);
+    // TODO: Assuming that universe->bounds == storage->bounds here.
+    return &storage[gol_int_rect_coord_to_index(universe->bounds, coord)];
 }
 
 bool gol_universe_visit_cells(const gol_universe_p universe, const gol_int_rect region, gol_cell_visitor visitor, void *user_data) {
@@ -101,16 +96,17 @@ void gol_universe_step(gol_universe_p universe, const size_t num_steps) {
 bool universe_visit_cells_mutating(const gol_universe_p universe, const gol_int_rect region, gol_cell_visitor_mutating visitor, void *user_data) {
     assert(universe && visitor);
     const size_t num_cells = universe->bounds.size.width * universe->bounds.size.height;
+    gol_cellp storage = gol_cell_storage_get_internal_pointer(universe->cells);
     for (size_t i = 0; i < num_cells; ++i) {
-        const gol_int_coord coord = index_to_coord(universe->bounds, i);
-        if (!visitor(universe, coord, universe->cells + i, user_data)) {
+        const gol_int_coord coord = gol_int_rect_index_to_coord(universe->bounds, i);
+        if (!visitor(universe, coord, storage + i, user_data)) {
             return false;
         }
     }
     return true;
 }
 
-bool randomly_mark_cell_as_alive(const gol_universe_p universe, const gol_int_coord coord, gol_cell_p cell, void *user_data) {
+bool randomly_mark_cell_as_alive(const gol_universe_p universe, const gol_int_coord coord, gol_cellp cell, void *user_data) {
     assert(user_data);
     const gol_float prob = *(gol_float *)user_data;
     assert(prob >= 0 && prob <= 1);
@@ -121,7 +117,7 @@ bool randomly_mark_cell_as_alive(const gol_universe_p universe, const gol_int_co
     return true;
 }
 
-bool apply_game_of_life_rules(const gol_universe_p universe, const gol_int_coord coord, gol_cell_p cell, void *user_data) {
+bool apply_game_of_life_rules(const gol_universe_p universe, const gol_int_coord coord, gol_cellp cell, void *user_data) {
     assert(universe);
 
     // Don't do anything to the edges.
@@ -137,10 +133,11 @@ bool apply_game_of_life_rules(const gol_universe_p universe, const gol_int_coord
 
     // Count the number of alive cells in the 3x3 neighborhood.
     int alive_count = 0;
-    gol_cell_p cur_cell;
+    gol_cellp cur_cell;
+    gol_cellp storage = gol_cell_storage_get_internal_pointer(universe->cells);
     for (int j_offset = -1; j_offset <= 1; ++j_offset) {
         for (int i_offset = -1; i_offset <= 1; ++i_offset) {
-            cur_cell = get_cell_unsafe(universe, gol_create_int_coord(coord.i + i_offset, coord.j + j_offset));
+            cur_cell = storage + gol_int_rect_coord_to_index(universe->bounds, gol_create_int_coord(coord.i + i_offset, coord.j + j_offset));
             alive_count += cur_cell->state == GOL_CELL_ALIVE;
         }
     }
@@ -168,22 +165,4 @@ bool apply_game_of_life_rules(const gol_universe_p universe, const gol_int_coord
 
     return true;
 }
-
-GOL_INLINE size_t coord_to_index(const gol_int_rect bounds, const gol_int_coord coord) {
-    assert(gol_int_rect_contains_coord(bounds, coord));
-    const int x = coord.i - bounds.origin.i;
-    const int y = coord.j - bounds.origin.j;
-    return y * bounds.size.width + x;
-}
-
-GOL_INLINE gol_int_coord index_to_coord(const gol_int_rect bounds, const size_t index) {
-    assert(index < bounds.size.width * bounds.size.height);
-    return gol_create_int_coord(bounds.origin.i + index % bounds.size.width,
-                                bounds.origin.j + (int)(index / bounds.size.height));
-}
-
-GOL_INLINE gol_cell_p get_cell_unsafe(const gol_universe_p universe, const gol_int_coord coord) {
-    return universe->cells + coord_to_index(universe->bounds, coord);
-}
-
 

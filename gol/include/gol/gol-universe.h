@@ -15,7 +15,7 @@ typedef struct gol_universe *gol_universe_p;
 /// @param cell The current cell.
 /// @param user_data The user_data parameter passed to gol_universe_visit_cells().
 /// @return True if the iteration should continue, otherwise false.
-typedef bool (*gol_cell_visitor)(const gol_universe_p universe, const gol_int_coord coord, const gol_cell_p cell, void *user_data);
+typedef bool (*gol_cell_visitor)(const gol_universe_p universe, const gol_int_coord coord, const gol_cellp cell, void *user_data);
 
 /// Create and initialize a universe structure.
 GOL_EXTERN gol_universe_p gol_create_universe();
@@ -30,7 +30,7 @@ GOL_EXTERN size_t gol_universe_get_generation(const gol_universe_p universe);
 GOL_EXTERN gol_int_rect gol_universe_get_bounds(const gol_universe_p universe);
 
 /// Return the cell at a particular location.
-GOL_EXTERN const gol_cell_p gol_universe_get_cell(const gol_universe_p universe, const gol_int_coord coord);
+GOL_EXTERN const gol_cellp gol_universe_get_cell(const gol_universe_p universe, const gol_int_coord coord);
 
 /// Visit each cell in @c region and call visitor() on the cell.
 /// @param universe The universe to visit cells in.

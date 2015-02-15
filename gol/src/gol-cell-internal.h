@@ -14,7 +14,7 @@ struct gol_cell {
 GOL_INLINE struct gol_cell gol_cell_create(const gol_cell_state state);
 
 // Set the cell's state.
-GOL_INLINE void gol_cell_set_state(gol_cell_p cell, const gol_cell_state state, const size_t generation);
+GOL_INLINE void gol_cell_set_state(gol_cellp cell, const gol_cell_state state, const size_t generation);
 
 
 // Inline definitions.
@@ -26,7 +26,7 @@ GOL_INLINE struct gol_cell gol_cell_create(const gol_cell_state state) {
     return cell;
 }
 
-GOL_INLINE void gol_cell_set_state(gol_cell_p cell, const gol_cell_state state, const size_t generation) {
+GOL_INLINE void gol_cell_set_state(gol_cellp cell, const gol_cell_state state, const size_t generation) {
     assert(cell);
     if (cell->state != state) {
         cell->state = state;
