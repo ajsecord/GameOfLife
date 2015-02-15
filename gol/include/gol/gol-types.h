@@ -32,7 +32,7 @@ typedef struct {
     gol_int_size size;
 } gol_int_rect;
 
-/// The empty gol_int_rect;
+/// The empty gol_int_rect.
 GOL_EXTERN const gol_int_rect GOL_INT_RECT_EMPTY;
 
 /// Create a gol_int_rect with particular values.
@@ -43,6 +43,9 @@ GOL_INLINE gol_int_rect gol_create_int_rect2(const int i, const int j, const int
 
 /// Returns true if a rectangle is empty.
 GOL_EXTERN bool gol_int_rect_is_empty(gol_int_rect rect);
+
+/// Returns true if @coord is contained in @rect.
+GOL_EXTERN bool gol_int_rect_contains_coord(const gol_int_rect rect, const gol_int_coord coord);
 
 
 //

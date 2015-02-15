@@ -1,2 +1,14 @@
 // The real root of the project.
 GOL_ROOT = $(SRCROOT)/..
+
+HEADER_SEARCH_PATHS = $(inherited) /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include $(GOL_ROOT)/gol/include
+
+// Screw GNU's extensions.
+GCC_C_LANGUAGE_STANDARD = c99
+
+// Use the proper type of include, don't need this hack.
+ALWAYS_SEARCH_USER_PATHS = NO
+
+// Possible specicous
+CLANG_ENABLE_MODULES = NO
+
